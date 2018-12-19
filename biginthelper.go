@@ -1,60 +1,36 @@
 package utils
 
 import (
+	"encoding/hex"
 	"io"
 
 	"math/big"
 
+	"crypto/sha256"
 	"fmt"
 
-	"crypto/sha256"
-
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/nkbai/log"
 )
 
-//EmptyHash all zero,invalid
-var EmptyHash = common.Hash{}
-
-//EmptyAddress all zero,invalid
-var EmptyAddress = common.Address{}
-
 //Pex short string stands for data
 func Pex(data []byte) string {
-	return common.Bytes2Hex(data[:4])
+	return hex.EncodeToString(data[:4])
 }
 
 //ShaSecret is short for sha256
-func Sha256(data ...[]byte) common.Hash {
+func Sha256(data ...[]byte) []byte {
 	//	return crypto.Keccak256Hash(data...)
 	var d = sha256.New()
 	d.Reset()
 	for _, b := range data {
 		d.Write(b)
 	}
-	h := common.Hash{}
-	h.SetBytes(d.Sum(nil))
-	return h
-}
-
-//HPex pex for hash
-func HPex(data common.Hash) string {
-	return common.Bytes2Hex(data[:2])
+	return d.Sum(nil)
 }
 
 //BPex bytes to string
 func BPex(data []byte) string {
-	return common.Bytes2Hex(data)
-}
-
-//APex pex for address
-func APex(data common.Address) string {
-	return common.Bytes2Hex(data[:4])
-}
-
-//APex2 shorter than APex
-func APex2(data common.Address) string {
-	return common.Bytes2Hex(data[:2])
+	return hex.EncodeToString(data)
 }
 
 //BigIntTo32Bytes convert a big int to bytes

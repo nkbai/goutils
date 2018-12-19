@@ -21,7 +21,6 @@ import (
 	"encoding/base32"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/ethereum/go-ethereum/common"
 )
 
 // BytesToString accepts bytes and returns their string presentation
@@ -142,23 +141,6 @@ func Exists(dir string) bool {
 		return false
 	}
 	return true
-}
-
-// SecretGenerator Return n random bytes suitable for cryptographic and it's corresponding hashlock
-type SecretGenerator func() (secret, hashlock common.Hash)
-
-//RandomSecretGenerator generate a random secret
-func RandomSecretGenerator() (secret, hashlock common.Hash) {
-	secret = common.BytesToHash(Random(32))
-	hashlock = Sha256(secret[:])
-	return
-}
-
-//NewSepecifiedSecretGenerator create a secret generator which don't know the secret
-func NewSepecifiedSecretGenerator(hashlock common.Hash) SecretGenerator {
-	return func() (secret, hashlock2 common.Hash) {
-		return EmptyHash, hashlock
-	}
 }
 
 // GetHomePath returns the user's $HOME directory
